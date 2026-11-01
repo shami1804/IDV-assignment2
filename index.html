@@ -1,1 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SVG Diagrams</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 30px 20px;
+  background: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.diagram-section {
+  width: 100%;
+  margin: 0 auto 35px;
+}
+
+.diagram-section h2 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #222;
+  margin: 0 0 20px;
+}
+
+.diagram-container,
+.heap-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 20px 20px;
+  background: #fff;
+  border: 1px solid #d6d6d6;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.diagram-container {
+  max-width: 1100px;
+}
+
+.heap-container {
+  max-width: 850px;
+}
+
+svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Diagram 001: Concept Map */
+.node {
+  stroke: #111;
+  stroke-width: 1.4;
+  cursor: pointer;
+  transition: fill 0.2s ease;
+}
+
+.root { fill: #e3e3e3; }
+.cyan { fill: #00e5e5; }
+.pink { fill: #f47388; }
+.orange { fill: #ffa45f; }
+.green { fill: #75c442; }
+
+.week {
+  fill: #fff;
+  stroke: #333;
+  stroke-width: 1.4;
+  cursor: pointer;
+  transition: fill 0.2s ease;
+}
+
+#conceptMap .node:hover {
+  fill: #fff;
+}
+
+#conceptMap .week:hover {
+  fill: #f0f0f0;
+}
+
+.label {
+  font-size: 22px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  fill: #111;
+  pointer-events: none;
+}
+
+.week-label {
+  font-size: 19px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  fill: #111;
+  pointer-events: none;
+}
+
+.relationship {
+  font-size: 23px;
+  text-anchor: middle;
+  fill: #111;
+}
+
+.connector {
+  fill: none;
+  stroke: #222;
+  stroke-width: 1.5;
+  marker-end: url(#arrowhead);
+  pointer-events: none;
+}
+
+/* Diagram 002: Binary Heap Tree */
+.heap-edge {
+  stroke: #222;
+  stroke-width: 1.2;
+  fill: none;
+}
+
+.heap-node {
+  fill: #fff;
+  stroke: #222;
+  stroke-width: 1.2;
+  cursor: pointer;
+  transition: fill 0.2s ease;
+}
+
+#binaryHeap .heap-node:hover {
+  fill: #e8e8e8;
+}
+
+.heap-value {
+  font-size: 16px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  fill: #111;
+  pointer-events: none;
+}
+
+.heap-index {
+  font-size: 15px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  fill: #111;
+  pointer-events: none;
+}
+
+/* Diagram 004: Recursion Tree */
+.recursion-container {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  background: #fff;
+  border: 1px solid #d6d6d6;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+#recursionTree {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.recursion-line {
+  stroke: #222;
+  stroke-width: 1.2;
+  fill: none;
+}
+
+.recursion-dashed {
+  stroke-dasharray: 4 4;
+}
+
+.recursion-text {
+  font-size: var(--base-size, 16px);
+  fill: #111;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: default;
+  transition: font-size 0.15s ease;
+}
+
+.recursion-text:hover {
+  font-size: calc(var(--base-size, 16px) + 4px);
+}
+
+.recursion-label {
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.recursion-left {
+  text-anchor: start;
+}
+
+.recursion-right {
+  text-anchor: end;
+}
+
+.recursion-horizontal {
+  stroke: #222;
+  stroke-width: 1.2;
+  fill: none;
+  marker-end: url(#recursionArrow);
+}
+
+.recursion-vertical-arrow {
+  stroke: #222;
+  stroke-width: 1.2;
+  fill: none;
+  marker-start: url(#recursionArrowUp);
+  marker-end: url(#recursionArrow);
+}
+
+@media (max-width: 650px) {
+  body {
+    padding: 16px 10px;
+  }
+
+  .diagram-container,
+  .heap-container,
+  .recursion-container {
+    padding: 12px;
+    overflow-x: auto;
+  }
+
+  #conceptMap {
+    min-width: 850px;
+  }
+
+  #binaryHeap {
+    min-width: 480px;
+  }
+
+  #recursionTree {
+    min-width: 430px;
+  }
+
+  .diagram-section h2 {
+    font-size: 21px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Diagram section -->
+<!-- 001 - CONCEPT MAP                             -->
+<!-- Diagram section -->
+
+<section class="diagram-section" id="section-001">
+
+  <h2>001 - Concept Map</h2>
+
+  <div class="diagram-container">
+
+    <svg height="550" width="1100" id="conceptMap"
+         viewBox="0 0 1100 550"
+         xmlns="http://www.w3.org/2000/svg"
+         role="img"
+         aria-label="Data Driven World concept map">
+
+      <defs>
+        <marker id="arrowhead"
+                markerWidth="9"
+                markerHeight="9"
+                refX="8"
+                refY="4.5"
+                orient="auto"
+                markerUnits="userSpaceOnUse">
+          <path d="M0,0 L9,4.5 L0,9 Z" fill="#222"/>
+        </marker>
+      </defs>
+
+      <rect class="node root"
+            x="425" y="20"
+            width="250" height="90"
+            rx="42"/>
+
+      <text class="label" x="550" y="49">
+        <tspan x="550">Data Driven</tspan>
+        <tspan x="550" dy="27">World</tspan>
+      </text>
+
+      <path class="connector" d="M470 110 L130 270"/>
+      <path class="connector" d="M515 110 L390 270"/>
+      <path class="connector" d="M585 110 L650 270"/>
+      <path class="connector" d="M630 110 L910 270"/>
+
+      <text class="relationship" x="550" y="158">learns</text>
+
+      <rect class="node cyan"
+            x="10" y="270" width="240" height="90"/>
+
+      <text class="label" x="130" y="305">
+        <tspan x="130">Algorithms and Data</tspan>
+        <tspan x="130" dy="27">Structures</tspan>
+      </text>
+
+      <rect class="node pink"
+            x="270" y="270" width="240" height="90"/>
+
+      <text class="label" x="390" y="305">
+        <tspan x="390">Object Oriented</tspan>
+        <tspan x="390" dy="27">Programming</tspan>
+      </text>
+
+      <rect class="node orange"
+            x="530" y="270" width="240" height="90"/>
+
+      <text class="label" x="650" y="315">State Machine</text>
+
+      <rect class="node green"
+            x="790" y="270" width="240" height="90"/>
+
+      <text class="label" x="910" y="305">
+        <tspan x="910">Introduction to</tspan>
+        <tspan x="910" dy="27">Machine Learning</tspan>
+      </text>
+
+      <path class="connector" d="M130 360 L130 445"/>
+      <path class="connector" d="M390 360 L390 445"/>
+      <path class="connector" d="M650 360 L650 445"/>
+      <path class="connector" d="M910 360 L910 445"/>
+
+      <rect class="week" x="40" y="445" width="180" height="45"/>
+      <text class="week-label" x="130" y="468">Week 1 to 6</text>
+
+      <rect class="week" x="300" y="445" width="180" height="45"/>
+      <text class="week-label" x="390" y="468">Week 4 to 8</text>
+
+      <rect class="week" x="560" y="445" width="180" height="45"/>
+      <text class="week-label" x="650" y="468">Week 8</text>
+
+      <rect class="week" x="820" y="445" width="180" height="45"/>
+      <text class="week-label" x="910" y="468">Week 9 to 11</text>
+
+    </svg>
+
+  </div>
+</section>
+
+<!-- Diagram section -->
+<!-- 002 - BINARY HEAP TREE                        -->
+<!-- Diagram section -->
+
+<section class="diagram-section" id="section-002">
+
+  <h2>002 - Binary Heap Tree</h2>
+
+  <div class="heap-container">
+
+    <svg height="369" width="592" id="binaryHeap"
+         viewBox="0 0 592 369"
+         xmlns="http://www.w3.org/2000/svg"
+         role="img"
+         aria-label="Binary heap tree with ten indexed nodes">
+
+      <g id="heapEdges" class="heap-edge"></g>
+      <g id="heapNodes"></g>
+
+    </svg>
+
+  </div>
+</section>
+
+<style>
+/* Diagram 004 - Recursion Tree */
+.recursion-container {
+  width: 100%;
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #d6d6d6;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+#recursionTree {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.recursion-line {
+  stroke: #222;
+  stroke-width: 1;
+  fill: none;
+}
+
+.recursion-dashed {
+  stroke-dasharray: 3 4;
+}
+
+.recursion-text {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: var(--base-size, 14px);
+  fill: #111;
+  cursor: default;
+  transition: font-size 0.15s ease;
+}
+
+.recursion-text:hover {
+  font-size: calc(var(--base-size, 14px) + 4px);
+}
+
+.recursion-center {
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.recursion-arrow {
+  stroke: #222;
+  stroke-width: 1;
+  fill: none;
+  marker-end: url(#recArrow);
+}
+
+.recursion-double-arrow {
+  stroke: #222;
+  stroke-width: 1;
+  fill: none;
+  marker-start: url(#recArrowUp);
+  marker-end: url(#recArrow);
+}
+</style>
+
+<section class="diagram-section" id="section-004">
+
+  <h2>004 - Recursion Tree</h2>
+
+  <div class="recursion-container">
+
+    <svg height="255" width="430" id="recursionTree"
+         viewBox="0 0 430 255"
+         xmlns="http://www.w3.org/2000/svg"
+         role="img"
+         aria-label="Recursion tree with three vertical c chains">
+
+      <defs>
+        <marker id="recArrow"
+                markerWidth="6"
+                markerHeight="6"
+                refX="5"
+                refY="3"
+                orient="auto"
+                markerUnits="userSpaceOnUse">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#222"/>
+        </marker>
+
+        <marker id="recArrowUp"
+                markerWidth="6"
+                markerHeight="6"
+                refX="3"
+                refY="1"
+                orient="0"
+                markerUnits="userSpaceOnUse">
+          <path d="M0,6 L3,0 L6,6 Z" fill="#222"/>
+        </marker>
+
+      </defs>
+
+      <!-- LEFT CHAIN -->
+      <text class="recursion-text recursion-center"
+            style="--base-size:14px"
+            x="34" y="17">c</text>
+
+      <line class="recursion-line"
+            x1="34" y1="28" x2="34" y2="57"/>
+
+      <text class="recursion-text"
+            style="--base-size:15px"
+            x="12" y="77">T(n-1)</text>
+
+      <!-- MIDDLE CHAIN -->
+      <text class="recursion-text recursion-center"
+            style="--base-size:14px"
+            x="154" y="17">c</text>
+
+      <line class="recursion-line"
+            x1="154" y1="28" x2="154" y2="57"/>
+
+      <text class="recursion-text recursion-center"
+            style="--base-size:14px"
+            x="154" y="77">c</text>
+
+      <line class="recursion-line"
+            x1="154" y1="88" x2="154" y2="117"/>
+
+      <text class="recursion-text"
+            style="--base-size:15px"
+            x="133" y="137">T(n-2)</text>
+
+      <!-- RIGHT CHAIN: ROW 1 -->
+      <text class="recursion-text recursion-center"
+            style="--base-size:14px"
+            x="259" y="17">c</text>
+
+      <line class="recursion-arrow"
+            x1="275" y1="17" x2="319" y2="17"/>
+
+      <text class="recursion-text recursion-center"
+            style="--base-size:14px"
+            x="340" y="17">c</text>
+
+      <!-- RIGHT CHAIN: ROW 2 -->
+      <text class="recursion-text recursion-center"
+            style="--base-size:14px"
+            x="259" y="76">c</text>
+
+      <line class="recursion-arrow"
+            x1="275" y1="76" x2="319" y2="76"/>
+
+      <text class="recursion-text recursion-center"
+            style="--base-size:14px"
+            x="340" y="76">c</text>
+
+      <!-- RIGHT CHAIN: ROW 3 -->
+      <text class="recursion-text recursion-center"
+            style="--base-size:14px"
+            x="259" y="135">c</text>
+
+      <line class="recursion-arrow"
+            x1="275" y1="135" x2="319" y2="135"/>
+
+      <text class="recursion-text recursion-center"
+            style="--base-size:14px"
+            x="340" y="135">c</text>
+
+      <!-- DASHED FINAL SEGMENT -->
+      <line class="recursion-line recursion-dashed"
+            x1="259" y1="146" x2="259" y2="224"/>
+
+      <!-- FINAL ROW -->
+      <text class="recursion-text"
+            style="--base-size:15px"
+            x="246" y="239">T(1)</text>
+
+      <line class="recursion-arrow"
+            x1="275" y1="235" x2="319" y2="235"/>
+
+      <text class="recursion-text recursion-center"
+            style="--base-size:14px"
+            x="340" y="235">c</text>
+
+      <!-- VERTICAL DOUBLE-ARROW AND n LABEL -->
+      <line class="recursion-double-arrow"
+            x1="369" y1="17" x2="369" y2="235"/>
+
+      <text class="recursion-text recursion-center"
+            style="--base-size:15px"
+            x="397" y="126">n</text>
+
+    </svg>
+
+  </div>
+</section>
+
+<!-- Diagram section -->
+<!-- 008 - STACK DIAGRAM                           -->
+<!-- Diagram section -->
+
+<style>
+.stack-container {
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #d6d6d6;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+#stackDiagram {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Red boxes: no hover effect */
+.stack-box {
+  fill: url(#stackRedGradient);
+  stroke: #111;
+  stroke-width: 3;
+}
+
+/* Blue container with square corners and a longer bottom */
+.stack-container-line {
+  fill: none;
+  stroke: #1717a8;
+  stroke-width: 8;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+}
+
+/* Thin diagonal arrows with open arrowheads */
+.stack-arrow {
+  fill: none;
+  stroke: #111;
+  stroke-width: 1.8;
+  marker-end: url(#stackArrowHead);
+}
+
+/* Labels */
+.stack-label {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  fill: #111;
+  cursor: default;
+  transition: font-size 0.15s ease;
+}
+
+.stack-label:hover {
+  font-size: 24px;
+}
+
+@media (max-width: 650px) {
+  .stack-container {
+    padding: 12px;
+    overflow-x: auto;
+  }
+
+  #stackDiagram {
+    min-width: 360px;
+  }
+}
+</style>
+
+<section class="diagram-section" id="section-008">
+
+  <h2>008 - Stack Diagram</h2>
+
+  <div class="stack-container">
+
+    <svg id="stackDiagram"
+         width="430"
+         height="570"
+         viewBox="0 0 430 570"
+         xmlns="http://www.w3.org/2000/svg"
+         role="img"
+         aria-label="Stack diagram showing push, pop and peek operations">
+
+      <defs>
+        <!-- Red gradient -->
+        <linearGradient id="stackRedGradient"
+                        x1="0" y1="0"
+                        x2="0" y2="1">
+          <stop offset="0%" stop-color="#b90000"/>
+          <stop offset="100%" stop-color="#ff1515"/>
+        </linearGradient>
+
+        <!-- Open line-style arrowhead -->
+        <marker id="stackArrowHead"
+                markerWidth="10"
+                markerHeight="10"
+                refX="9"
+                refY="5"
+                orient="auto"
+                markerUnits="userSpaceOnUse">
+          <path d="M1,1 L9,5 L1,9"
+                fill="none"
+                stroke="#111"
+                stroke-width="1.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Two boxes above the stack -->
+      <rect class="stack-box"
+            x="35" y="20"
+            width="145" height="55"/>
+
+      <rect class="stack-box"
+            x="220" y="20"
+            width="145" height="55"/>
+
+      <!-- Push arrow: diagonal down-right -->
+      <path class="stack-arrow"
+            d="M125 92 L166 164"/>
+
+      <text class="stack-label"
+            x="65" y="132">push</text>
+
+      <!-- Pop arrow: diagonal up-right -->
+      <path class="stack-arrow"
+            d="M232 164 L273 92"/>
+
+      <text class="stack-label"
+            x="273" y="132">pop</text>
+
+      <!-- Blue container with extended square bottom -->
+      <path class="stack-container-line"
+            d="M105 185
+               L105 520
+               L310 520
+               L310 250"/>
+
+      <!-- Top red stack box -->
+      <rect class="stack-box"
+            x="125" y="180"
+            width="155" height="55"/>
+
+      <!-- Middle red stack box -->
+      <rect class="stack-box"
+            x="125" y="250"
+            width="155" height="55"/>
+
+      <!-- Bottom red stack box -->
+      <rect class="stack-box"
+            x="125" y="320"
+            width="155" height="55"/>
+
+      <!-- Peek label -->
+      <text class="stack-label"
+            x="290" y="211">peek</text>
+
+      <!-- Blue triangle at the base -->
+      <polygon points="207,395 137,432 277,432"
+               fill="#1717a8"/>
+
+    </svg>
+
+  </div>
+</section>
+
+<!-- Diagram section -->
+<!-- 010 - DIRECTED GRAPH                          -->
+<!-- Diagram section -->
+
+<style>
+  .directed-graph-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #d6d6d6;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+  }
+
+  #directedGraph {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Directed edges */
+  .dg-edge {
+    fill: none;
+    stroke: #111;
+    stroke-width: 2.5;
+    marker-end: url(#dgArrow);
+  }
+
+  /* Plain edges without arrowheads */
+  .dg-edge-plain {
+    fill: none;
+    stroke: #111;
+    stroke-width: 2.5;
+  }
+
+  /* Vertex circles */
+  .dg-vertex {
+    fill: #fff;
+    stroke: #111;
+    stroke-width: 2;
+    transition: fill 0.2s ease;
+    cursor: pointer;
+  }
+
+  .dg-vertex:hover,
+  .dg-vertex:has(+ .dg-vertex-label:hover) {
+    fill: #e6e6e6;
+  }
+
+  /* Vertex labels */
+  .dg-vertex-label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    fill: #111;
+    cursor: pointer;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.2s ease;
+  }
+
+  .dg-vertex-label:hover {
+    transform: scale(1.12);
+  }
+
+  /* Edge labels */
+  .dg-edge-label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    text-anchor: middle;
+    fill: #111;
+    cursor: default;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.2s ease;
+  }
+
+  .dg-edge-label:hover {
+    transform: scale(1.12);
+  }
+</style>
+
+<section class="diagram-section" id="section-010">
+  <h2>010 - Directed Graph</h2>
+
+  <div class="directed-graph-container">
+    <svg id="directedGraph"
+         width="700"
+         height="500"
+         viewBox="0 0 700 500"
+         xmlns="http://www.w3.org/2000/svg"
+         role="img"
+         aria-label="Graph with five vertices and seven edges">
+
+      <defs>
+        <!-- Reusable solid triangular arrowhead -->
+        <marker id="dgArrow"
+                markerWidth="16"
+                markerHeight="16"
+                refX="14"
+                refY="8"
+                orient="auto"
+                markerUnits="userSpaceOnUse">
+          <path d="M0,0 L16,8 L0,16 Z"
+                fill="#111"
+                stroke="none"/>
+        </marker>
+      </defs>
+
+      <!-- E1: Plain line without arrowhead -->
+      <path class="dg-edge-plain"
+            d="M122 174 L256 95"/>
+      <text class="dg-edge-label" x="178" y="128">E1</text>
+
+      <!-- E2: V1 to V5 -->
+      <path class="dg-edge"
+            d="M338 88 L576 184"/>
+      <text class="dg-edge-label" x="485" y="120">E2</text>
+
+      <!-- E3: V5 to V4 -->
+      <path class="dg-edge"
+            d="M594 234 L465 318"/>
+      <text class="dg-edge-label" x="527" y="309">E3</text>
+
+      <!-- E4: V4 to V1 -->
+      <path class="dg-edge"
+            d="M405 316 L319 110"/>
+      <text class="dg-edge-label" x="395" y="225">E4</text>
+
+      <!-- E5: V4 to V3 -->
+      <path class="dg-edge"
+            d="M382 374 L231 431"/>
+      <text class="dg-edge-label" x="330" y="438">E5</text>
+
+      <!-- E6: Plain line without arrowhead -->
+      <path class="dg-edge-plain"
+            d="M94 247 L158 384"/>
+      <text class="dg-edge-label" x="105" y="350">E6</text>
+
+      <!-- E7: V2 to V4 -->
+      <path class="dg-edge"
+            d="M125 219 L378 331"/>
+      <text class="dg-edge-label" x="263" y="258">E7</text>
+
+      <!-- Vertices -->
+      <circle class="dg-vertex" cx="295" cy="65" r="48"/>
+      <text class="dg-vertex-label" x="295" y="65">V1</text>
+
+      <circle class="dg-vertex" cx="80" cy="200" r="48"/>
+      <text class="dg-vertex-label" x="80" y="200">V2</text>
+
+      <circle class="dg-vertex" cx="180" cy="425" r="48"/>
+      <text class="dg-vertex-label" x="180" y="425">V3</text>
+
+      <circle class="dg-vertex" cx="425" cy="350" r="48"/>
+      <text class="dg-vertex-label" x="425" y="350">V4</text>
+
+      <circle class="dg-vertex" cx="625" cy="200" r="48"/>
+      <text class="dg-vertex-label" x="625" y="200">V5</text>
+
+    </svg>
+  </div>
+</section>
+
+<!-- NOTE: This drawing depicts Tower of Hanoi rods and disks, not a linked list. -->
+<!-- Diagram section -->
+<!-- 006 - LINKED LIST (heading preserved from source) -->
+<!-- Diagram section -->
+
+<style>
+  .linked-list-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #d6d6d6;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+  }
+
+  #linkedListDiagram {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .ll-rod {
+    fill: url(#llRodGradient);
+    stroke: #111;
+    stroke-width: 1.5;
+  }
+
+  .ll-base {
+    fill: #000;
+    stroke: #000;
+    stroke-width: 1;
+  }
+
+  .ll-disk {
+    fill: url(#llDiskGradient);
+    stroke: #111;
+    stroke-width: 1.5;
+    cursor: pointer;
+    transition: fill 0.2s ease;
+  }
+
+  .ll-disk:hover {
+    fill: #d3d3d3;
+  }
+
+  .ll-disk-label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    fill: #000;
+    cursor: pointer;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.2s ease;
+  }
+
+  .ll-disk-label:hover {
+    transform: scale(1.1);
+  }
+
+  .ll-rod-label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    text-anchor: middle;
+    fill: #000;
+  }
+
+  .ll-position-label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    text-anchor: middle;
+    fill: #000;
+    cursor: default;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.2s ease;
+  }
+
+  .ll-position-label:hover {
+    transform: scale(1.08);
+  }
+
+  .ll-bracket {
+    fill: none;
+    stroke: #000;
+    stroke-width: 3;
+  }
+</style>
+
+<section class="diagram-section" id="section-006">
+  <h2>006 - Linked List</h2>
+
+  <div class="linked-list-container">
+    <svg id="linkedListDiagram"
+         width="900"
+         height="400"
+         viewBox="0 0 900 400"
+         xmlns="http://www.w3.org/2000/svg"
+         role="img"
+         aria-label="Three rods labelled A, B and C showing source, destination and auxiliary">
+
+      <defs>
+        <linearGradient id="llRodGradient"
+                        x1="0" y1="0"
+                        x2="1" y2="0">
+          <stop offset="0%" stop-color="#bdbdbd"/>
+          <stop offset="50%" stop-color="#888"/>
+          <stop offset="100%" stop-color="#bdbdbd"/>
+        </linearGradient>
+
+        <linearGradient id="llDiskGradient"
+                        x1="0" y1="0"
+                        x2="1" y2="0">
+          <stop offset="0%" stop-color="#777"/>
+          <stop offset="50%" stop-color="#bcbcbc"/>
+          <stop offset="100%" stop-color="#777"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Rod labels -->
+      <text class="ll-rod-label" x="190" y="45">A</text>
+      <text class="ll-rod-label" x="460" y="45">B</text>
+      <text class="ll-rod-label" x="730" y="45">C</text>
+
+      <!-- Rods -->
+      <rect class="ll-rod" x="176" y="85" width="28" height="235"/>
+      <rect class="ll-rod" x="446" y="85" width="28" height="235"/>
+      <rect class="ll-rod" x="716" y="85" width="28" height="235"/>
+
+      <!-- Bases -->
+      <rect class="ll-base" x="75" y="320" width="230" height="32" rx="1"/>
+      <rect class="ll-base" x="345" y="320" width="230" height="32" rx="1"/>
+      <rect class="ll-base" x="615" y="320" width="230" height="32" rx="1"/>
+
+      <!-- Source disks -->
+      <rect class="ll-disk" x="145" y="145" width="90" height="30"/>
+      <text class="ll-disk-label" x="190" y="160">1</text>
+
+      <rect class="ll-disk" x="130" y="175" width="120" height="30"/>
+      <text class="ll-disk-label" x="190" y="190">2</text>
+
+      <rect x="115" y="205" width="150" height="60"
+            fill="#fff" stroke="#111" stroke-width="1.5"/>
+      <text class="ll-disk-label" x="190" y="235">...</text>
+
+      <rect class="ll-disk" x="100" y="265" width="180" height="30"/>
+      <text class="ll-disk-label" x="190" y="280">n - 1</text>
+
+      <rect class="ll-disk" x="85" y="295" width="210" height="25"/>
+      <text class="ll-disk-label" x="190" y="308">n</text>
+
+      <!-- n - 1 disks bracket -->
+      <path class="ll-bracket"
+            d="M60 150 H45 V315 H60 M37 232 H53"/>
+
+      <text class="ll-position-label"
+            x="25" y="235"
+            transform="rotate(-90 25 235)">n - 1 disks</text>
+
+      <!-- Position labels -->
+      <text class="ll-position-label" x="190" y="382">source</text>
+      <text class="ll-position-label" x="460" y="382">destination</text>
+      <text class="ll-position-label" x="730" y="382">auxiliary</text>
+
+    </svg>
+  </div>
+</section>
+
+<!-- Diagram section -->
+<!-- 012 - STATE MACHINE                           -->
+<!-- Diagram section -->
+
+<style>
+  .state-machine-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #d6d6d6;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+  }
+
+  #stateMachineDiagram {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #fff;
+  }
+
+  /* State circles */
+  .sm-state {
+    stroke-width: 2;
+    cursor: pointer;
+    transition: fill 0.2s ease;
+  }
+
+  .sm-state-zero {
+    fill: #d9e7ff;
+    stroke: #7398cc;
+  }
+
+  .sm-state-zero:hover {
+    fill: #c2d8fa;
+  }
+
+  .sm-state-one {
+    fill: #f8cecc;
+    stroke: #c56b68;
+  }
+
+  .sm-state-one:hover {
+    fill: #f2b9b6;
+  }
+
+  /* State numbers */
+  .sm-state-label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    fill: #111;
+    cursor: pointer;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.2s ease;
+  }
+
+  .sm-state-label:hover {
+    transform: scale(1.15);
+  }
+
+  /* Transition lines and arrowheads */
+  .sm-transition {
+    fill: none;
+    stroke: #111;
+    stroke-width: 1.8;
+    marker-end: url(#smArrow);
+  }
+
+  /* Transition labels */
+  .sm-transition-label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 19px;
+    fill: #111;
+    text-anchor: middle;
+    cursor: pointer;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.2s ease;
+  }
+
+  .sm-transition-label:hover {
+    transform: scale(1.12);
+  }
+
+  .sm-label-bg {
+    fill: #fff;
+  }
+</style>
+
+<section class="diagram-section" id="section-012">
+  <h2>012 - State Machine</h2>
+
+  <div class="state-machine-container">
+    <svg id="stateMachineDiagram"
+         width="900"
+         height="500"
+         viewBox="0 0 900 500"
+         xmlns="http://www.w3.org/2000/svg"
+         role="img"
+         aria-label="State machine with two states and four transitions">
+
+      <defs>
+        <!-- Single reusable arrowhead -->
+        <marker id="smArrow"
+                markerWidth="10"
+                markerHeight="10"
+                refX="8"
+                refY="4"
+                orient="auto"
+                markerUnits="userSpaceOnUse">
+          <path d="M0,0 L8,4 L0,8 Z"
+                fill="#111"/>
+        </marker>
+      </defs>
+
+      <!-- Upper curved transition -->
+      <path class="sm-transition"
+            d="M315 165 C315 30, 810 30, 810 165"/>
+
+      <rect class="sm-label-bg"
+            x="385" y="18"
+            width="225" height="32"/>
+
+      <text class="sm-transition-label"
+            x="497" y="41">100/(0, "coke", 50)</text>
+
+      <!-- State 0 to State 1 -->
+      <path class="sm-transition"
+            d="M400 250 L720 250"/>
+
+      <rect class="sm-label-bg"
+            x="438" y="233"
+            width="210" height="32"/>
+
+      <text class="sm-transition-label"
+            x="543" y="256">50/(50, --, 0)</text>
+
+      <!-- Left curved transition -->
+      <path class="sm-transition"
+            d="M230 250
+               C85 250, 85 420, 230 420
+               C290 420, 315 385, 315 340"/>
+
+      <rect class="sm-label-bg"
+            x="20" y="335"
+            width="230" height="32"/>
+
+      <text class="sm-transition-label"
+            x="135" y="358">100/(0, "coke", 0)</text>
+
+      <!-- Lower curved transition -->
+      <path class="sm-transition"
+            d="M810 335 C810 455, 405 455, 405 335"/>
+
+      <rect class="sm-label-bg"
+            x="445" y="405"
+            width="230" height="32"/>
+
+      <text class="sm-transition-label"
+            x="560" y="428">50/(0, "coke", 0)</text>
+
+      <!-- State 0 -->
+      <circle class="sm-state sm-state-zero"
+              cx="315" cy="250" r="85"/>
+
+      <text class="sm-state-label"
+            x="315" y="250">0</text>
+
+      <!-- State 1 -->
+      <circle class="sm-state sm-state-one"
+              cx="810" cy="250" r="85"/>
+
+      <text class="sm-state-label"
+            x="810" y="250">1</text>
+
+    </svg>
+  </div>
+</section>
+
+<script>
+(() => {
+  const heap = [
+    { index: 0, value: 16, x: 326, y: 56 },
+    { index: 1, value: 14, x: 200, y: 147 },
+    { index: 2, value: 10, x: 470, y: 147 },
+    { index: 3, value: 8,  x: 110, y: 232 },
+    { index: 4, value: 7,  x: 282, y: 232 },
+    { index: 5, value: 9,  x: 402, y: 232 },
+    { index: 6, value: 3,  x: 541, y: 232 },
+    { index: 7, value: 2,  x: 42,  y: 326 },
+    { index: 8, value: 4,  x: 181, y: 326 },
+    { index: 9, value: 1,  x: 254, y: 326 }
+  ];
+
+  const svgNS = "http://www.w3.org/2000/svg";
+  const edges = document.getElementById("heapEdges");
+  const nodes = document.getElementById("heapNodes");
+  const radius = 27;
+
+  const indexPositions = {
+    0: { x: 295, y: 31 },
+    1: { x: 170, y: 122 },
+    2: { x: 425, y: 137 },
+    3: { x: 79,  y: 210 },
+    4: { x: 247, y: 210 },
+    5: { x: 363, y: 210 },
+    6: { x: 505, y: 210 },
+    7: { x: 18,  y: 303 },
+    8: { x: 142, y: 303 },
+    9: { x: 226, y: 303 }
+  };
+
+  function createSvgElement(tag, attributes, textContent) {
+    const element = document.createElementNS(svgNS, tag);
+
+    Object.entries(attributes).forEach(([key, value]) => {
+      element.setAttribute(key, value);
+    });
+
+    if (textContent !== undefined) {
+      element.textContent = textContent;
+    }
+
+    return element;
+  }
+
+  heap.forEach(node => {
+    if (node.index === 0) return;
+
+    const parentIndex = Math.floor((node.index - 1) / 2);
+    const parent = heap[parentIndex];
+
+    const dx = node.x - parent.x;
+    const dy = node.y - parent.y;
+    const distance = Math.hypot(dx, dy);
+
+    edges.appendChild(createSvgElement("line", {
+      x1: parent.x + (dx / distance) * radius,
+      y1: parent.y + (dy / distance) * radius,
+      x2: node.x - (dx / distance) * radius,
+      y2: node.y - (dy / distance) * radius
+    }));
+  });
+
+  heap.forEach(node => {
+    const group = createSvgElement("g", {});
+    const labelPosition = indexPositions[node.index];
+
+    group.appendChild(createSvgElement("circle", {
+      cx: node.x,
+      cy: node.y,
+      r: radius,
+      class: "heap-node"
+    }));
+
+    group.appendChild(createSvgElement("text", {
+      x: labelPosition.x,
+      y: labelPosition.y,
+      class: "heap-index"
+    }, node.index));
+
+    group.appendChild(createSvgElement("text", {
+      x: node.x,
+      y: node.y,
+      class: "heap-value"
+    }, node.value));
+
+    nodes.appendChild(group);
+  });
+})();
+</script>
+
+</body>
+</html>
 
